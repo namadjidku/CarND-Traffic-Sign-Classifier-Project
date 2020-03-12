@@ -44,34 +44,32 @@ Distribution of training data among classes:
 
 ### Design and Test a Model Architecture
 
-#### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
+#### 1. Preprocessing the image data. 
 
-As a first step I performed data augmentation to balance the data. Two affine transformations were used: rotation by -15 or 15 degree and adding gaussian noise. As the result, the classes which had number of instances less then the mean were doubled or tripled depending on the initial amount. After augmenting, the distribution of training data is more balanced:
+As a first step we performed data augmentation to balance the data. Two affine transformations were used: rotation by -15 or 15 degree and adding gaussian noise. As the result, the classes which had number of instances less then the mean were doubled or tripled depending on the initial amount. After augmenting, the distribution of training data is more balanced:
 
 ![alt text][image3]
 
-As a first step, I decided to convert the images to grayscale because grayscale images show more contrast. The function cvtColor of the library opencv was used for converting:
+After augmenting the training dataset, images were converted to the grayscale to represent more contrast. The function cvtColor of the library opencv was used for converting:
 
 ```python
 cv2.cvtColor(x, cv2.COLOR_RGB2GRAY)
 ```
 
-Here is an example of a traffic sign image before and after grayscaling.
+Example of a traffic sign image before and after grayscaling:
 
 Augmented image            |  Augmented grayscaled image
 :-------------------------:|:-------------------------:
 ![alt text][image4]        |  ![alt text][image5]
 
 
-As a last step, I normalized the image data to make the data with mean zero and equal variance, for faster convergence. To normalize I used function normalize from opencv library and reshaped the normalized images form (32,32) to (32,32,1) using numpy:
+At the next stage, we normalized the image data to make the data with mean zero and equal variance using the function normalize from the opencv library. The normalized images were reshaped form (32,32) to (32,32,1) using numpy:
 
 ```python
 np.expand_dims(cv2.normalize(x,  np.zeros((32, 32, 1)), 0, 255, cv2.NORM_MINMAX), -1)
 ```
 
-#### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
-
-My final model consisted of the following layers:
+#### 2. Model architecture:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -92,49 +90,32 @@ My final model consisted of the following layers:
  
 
 
-#### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+#### 3. Training model:
 
-To train the model, I used a batch size of 128, 100 epochs, and a learning rate of 0.001. The optimizer used is AdamOptimizer with softmax cross entropy objective function.
+The model was trained with a batch size of 128 for 100 epochs and learning rate of 0.001, AdamOptimizer and softmax cross entropy objective function.
 
-#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+#### 4. Approach taken for finding a solution.
 
-My final model results were:
+The final model's performance results are:
 * training set accuracy of 0.989
 * validation set accuracy of 0.968 
 * test set accuracy of 0.952
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-
-The first architecture I tried was Lenet-5 with rgb normalized images. 
-* What were some problems with the initial architecture?
-
-The accuracy on validation set was approximately 90%.
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-
-Based on the high training accuracy and lower validation accuracy we can claim that LeNeT-5 model suffers from overfitting with traffic sign data. To avoid overfitting I added to the initial structure two dropouts with keeping probability 0.5. Dropout is added after the first pooling layer and befor the last fully-connected layer. To improve training of the network, I tried to balance the training data set via augmenting data. 
-* Which parameters were tuned? How were they adjusted and why?
-
-I adjusted the number of epochs (100) since the validation accuracy was increasing. I am still not convinced myself with this value, as the increase should be monotonic, for me it is increasing but with small jumps. 
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
-
-As I have already described adding dropouts helped to decrease overfitting. Considering the semantic complexity of the images  (the images are quite simple) and their small size (32x32), two convolutional layers performed well. 
+The architecture of the NN we used to address classification of the traffic signs is Lenet-5 with rgb normalized images. Based on the high training accuracy (99%) and lower validation accuracy (90%), we concluded that the model suffered from overfitting. To avoid overfitting we added to the initial architecture two dropouts layers with a keeping probability of 0.5. Dropout is added after the first pooling layer and befor the last fully-connected layer. Augmenting the training dataset, adding dropouts and tuning the number of epochs resulted in achieving 96.8% validation accuracy. Considering the semantic complexity of the images (the images are quite simple) and their small size (32x32), two convolutional layers performed well. 
  
 
 ### Test a Model on New Images
 
-#### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
-
-Here are five German traffic signs that I found on the web:
+#### 1. German traffic signs found in web:
 
 ![alt text][image6]  
 
 
 The images were chosen to test the network against different lighting conditions for traffic signs. The first and third images were chosen as examples of a dark image. The second, fourth and fifth images have similar lighting conditions. 
 
-#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+#### 2. Model's predictions.
 
-Here are the results of the prediction:
+Prediction results:
 
 | Image			              |     Prediction	        					| 
 |:---------------------------:|:-------------------------------------------:| 
@@ -147,11 +128,8 @@ Here are the results of the prediction:
 
 The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set of 95%.
 
-#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
+#### 3. Softmax probabilities for each prediction:
 
-The code for making predictions on my final model is located in the 25th cell of the Ipython notebook.
-
-For the first, third and fifth images, the model is almost absolutely sure in classifying (probability of 0.99). The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
