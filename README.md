@@ -23,9 +23,7 @@ The goals / steps of this project are the following:
 
 ### Data Set Summary & Exploration
 
-#### 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
-
-I used the standard python len() function and set to calculate summary statistics of the traffic signs data set:
+#### 1. Statistics of the traffic signs data set:
 
 * The size of training set is 34799
 * The size of the validation set is 4410
@@ -33,13 +31,13 @@ I used the standard python len() function and set to calculate summary statistic
 * The shape of a traffic sign image is (32, 32, 3)
 * The number of unique classes/labels in the data set is 43
 
-#### 2. Include an exploratory visualization of the dataset.
+#### 2. Visualization of the dataset.
 
-Here is an exploratory visualization of the data set. Below are randomly chosen images from the training data set.
+Below are randomly chosen images from the training data set.
 
 ![alt text][image1]
 
-To check the distribution of training data among classes, I used Counter from collections and plotted its results using a bar chart. We can see that data is unbalanced.
+Distribution of training data among classes:
 
 ![alt text][image2]
 
